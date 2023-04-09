@@ -1,19 +1,19 @@
 
 class TextBackground {
     constructor(text = 'PK',
+                mode = 'blink',
                 textSize = 25, 
                 space = 100,
                 backgroundColor = [247, 100, 0, 1],
                 textColor = [247, 100, 100, 1],
-                blink = true
         )          
         {
         this._text = text;
+        this._mode = mode;
         this._textSize = textSize;
         this._space = space;
         this._backgroundColor = backgroundColor;
         this._textColor = textColor;
-        this._blink = blink;
         this._textInstances = [];
         
     }
@@ -69,18 +69,18 @@ class TextInstance extends TextBackground {
 
     renderText () {
 
-        
-        // If blink is set, call get Interp for interpolated transition value
-        if (this._blink === true) {
-
+        switch (this._mode) {
+            // If blink is set, call get Interp for interpolated transition value
+            case 'blink': 
             const interp = this.getInterp();
 
             this.setDrawModes(interp);
 
             // set HSLA color for circle
             fill(this._textColor[0], this._textColor[1], this._textColor[2], interp);
-        } else {
-            fill(this._textColor[0], this._textColor[1], this._textColor[2], this._textColor[3]);
+
+            break;
+
         }
         
         text(this._text, this._posX, this._posY, this._posX + 100, this._posY + 100);
@@ -88,7 +88,8 @@ class TextInstance extends TextBackground {
 
 
     getInterp() {
-        // Alpha transition logic
+        /* Helper for blink mode: handles alpha transition logic */
+
         if (this._p <= 1 ) {
             this._p += 0.1;
         } else {
@@ -96,11 +97,7 @@ class TextInstance extends TextBackground {
             this._startA = this._endA
             this._endA = Math.random();
             this._p = 0;
-            /*
-            console.log(`startA = ${this._startA}, 
-            endA = ${this._endA}, 
-            p = ${this._p}`);
-            */
+           
         }
 
         return lerp(this._startA, this._endA, this._p);
