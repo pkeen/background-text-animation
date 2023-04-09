@@ -48,9 +48,6 @@ class TextBackground {
         }
     }
 
-    blinkAtRandom () {
-        this._blink = true;
-    }
 
     
 }
