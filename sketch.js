@@ -18,8 +18,6 @@ function setup() {
 
   
 
-  bg.blinkAtRandom();
-
   bg.createTextInstances(window.innerWidth, window.innerHeight, 50);
   
 }
