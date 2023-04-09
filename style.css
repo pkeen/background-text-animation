@@ -1,0 +1,11 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+#pk-background {
+    /*background-color: black; */
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+}
