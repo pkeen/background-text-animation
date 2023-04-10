@@ -1,7 +1,7 @@
 
 class TextBackground {
     constructor(text = 'PK',
-                mode = 'blink',
+                mode = 'uniform-blink',
                 textSize = 25, 
                 space = 100,
                 backgroundColor = [247, 100, 0, 1],
@@ -15,6 +15,9 @@ class TextBackground {
         this._backgroundColor = backgroundColor;
         this._textColor = textColor;
         this._textInstances = [];
+
+        // test val
+        this._intervalTest = 0;
         
     }
 
@@ -48,7 +51,44 @@ class TextBackground {
         }
     }
 
+    
+    uniformBlink () {
 
+        const self = this;
+
+        let i = 0
+        setInterval( () => {
+            this.onOff();
+        }, 1000);
+
+    }
+
+    onOff () {
+    
+        this._intervalTest === 0 ? this._intervalTest = 1 : this._intervalTest =  0;
+        console.log(this._intervalTest);
+    }
+
+    blinkUniform () {
+        // switch interval between 0 and 1
+        this._intervalTest === 0 ? this._intervalTest = 1 : this._intervalTest =  0;
+
+        for (let x = 0; x < this._textInstances.length; x++) {
+            for (let y = 0; y < this._textInstances[x].length; y++) {
+                if (this._intervalTest === 0) {
+                    this._textInstances[x][y]._startA === 0;
+                    this._textInstances[x][y]._endA === 1;
+
+                } else {
+                    this._textInstances[x][y]._startA === 1;
+                    this._textInstances[x][y]._endA === 0;
+                }
+                
+                
+            }
+        }
+        
+    }
 
     
 }
@@ -70,15 +110,28 @@ class TextInstance extends TextBackground {
         switch (this._mode) {
             // If blink is set, call get Interp for interpolated transition value
             case 'blink': 
-            const interp = this.getInterp();
+                const interp = this.getInterp();
 
-            this.setDrawModes(interp);
+                this.setDrawModes(interp);
 
-            // set HSLA color for circle
-            fill(this._textColor[0], this._textColor[1], this._textColor[2], interp);
+                // set HSLA color for circle
+                fill(this._textColor[0], this._textColor[1], this._textColor[2], interp);
 
-            break;
+                break;
 
+            case 'uniform-blink':
+
+                const uniformInterp = this.getUniformInterp();
+
+                this.setDrawModes(uniformInterp);
+
+                break;
+
+            default:
+                
+                this.setDrawModes();
+                break;
+            
         }
         
         text(this._text, this._posX, this._posY, this._posX + 100, this._posY + 100);
@@ -96,6 +149,21 @@ class TextInstance extends TextBackground {
             this._endA = Math.random();
             this._p = 0;
            
+        }
+
+        return lerp(this._startA, this._endA, this._p);
+    }
+
+    getUniformInterp() {
+        if (this._p < 1 ) {
+            this._p += 0.1;
+        } else {
+            let start = this._startA;
+            this._startA = this._endA;
+            this._endA = start;
+            this._p = 0;
+            // If p has reached 1 (it has reached its end value, the end value becomes the start value and we get a random new end value)
+            
         }
 
         return lerp(this._startA, this._endA, this._p);
