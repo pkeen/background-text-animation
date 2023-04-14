@@ -4,17 +4,8 @@ import { TextBackground } from "./text-animation.js";
 
 const fr = 25;
 
-const bg = new TextBackground();
+const bg = new TextBackground('Pete', 'uniform-blink');
 
-/*
-let intervalTest = 0;
-
-setInterval( () => {
-  intervalTest === 0 ? intervalTest = 1 : intervalTest = 0;
-  console.log(intervalTest);
-}, 1000)
-
-*/
 
 function setup() {
   // Create the canvas fullscreen size
@@ -24,7 +15,7 @@ function setup() {
 
   bg.createTextInstances(window.innerWidth, window.innerHeight, 50);
 
-  //bg.uniformBlink(); 
+  bg.uniformBlink(); 
   
 }
 
@@ -34,7 +25,6 @@ function draw() {
   
   bg.drawTextInstances();
 
-  //bg.uniformBlink();
 }
 
 // For some reason I had to add this to make it work
