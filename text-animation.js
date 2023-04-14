@@ -34,7 +34,7 @@ class TextBackground {
         for (let x = 0; x < windowWidth; x += space) {
             let innerArray = [];
             for (let y = 0; y < windowHeight; y += space) {
-                const textInstance = new TextInstance(x, y);
+                const textInstance = new TextInstance(this._text, this._mode, this._textSize, this._space, this._textColor, x, y);
                 innerArray.push(textInstance);
             };
             this._textInstances.push(innerArray);
@@ -93,10 +93,14 @@ class TextBackground {
     
 }
 
-class TextInstance extends TextBackground {
+class TextInstance {
 
-    constructor(posX, posY, ...args) {
-        super(...args);
+    constructor(text, mode, textSize, space, textColor, posX, posY) {
+        this._text = text;
+        this._mode = mode;
+        this._textSize = textSize;
+        this._space = space;
+        this._textColor = textColor;
         this._posX = posX;
         this._posY = posY;
         this._startA = 0;
